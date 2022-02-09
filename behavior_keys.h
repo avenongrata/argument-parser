@@ -27,8 +27,8 @@
 
 typedef struct _behavior_keys
 {
-    byte_t *  input;     /* incoming arguments */
-    byte_t ** _output;    /* array of found arguments */
+    byte_t *  input;    /* incoming arguments */
+    byte_t ** _output;  /* array of found arguments */
 
     /*-----------------------------------------------------------------------*/
 
