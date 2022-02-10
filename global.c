@@ -8,43 +8,43 @@
 
 /*---------------------------------------------------------------------------*/
 
-static void _avoid_multiple_sep(const char ** str)
+static void _get_key(const char ** str)
 {
-    while (isspace(**str))
-    {
+    while (!isspace(**str) && **str)
         ++*str;
-    }
 }
 
 /*---------------------------------------------------------------------------*/
 
-static int _get_keys_cnt(const char *str)
+static int _str_len(const char * str)
+{
+    int len = 0;
+
+    while (!isspace(str[len]) && str[len])
+        len++;
+
+    return len;
+}
+
+/*---------------------------------------------------------------------------*/
+
+static int _get_keys_cnt(const char * str)
 {
     const char * tmp_ch = str;
     int key_cnt = 0;
-    bool digit = false;
 
     while (*tmp_ch)
     {
-        if (isspace(*tmp_ch))
+        if (!isspace(*tmp_ch))
         {
-            if (digit)
-                key_cnt++;
+            key_cnt++;
+            _get_key(&tmp_ch);
 
-            _avoid_multiple_sep(&tmp_ch);
             continue;
-        }
-        else if (!digit)
-        {
-            digit = true;
         }
 
         tmp_ch++;
     }
-
-    /* to avoid missing first or last param */
-    if (digit)
-        key_cnt++;
 
     return key_cnt;
 }
@@ -56,30 +56,39 @@ int _parse_cmd(byte_t ** arr, const char * cmd)
     const char * tmp_ch = cmd;
     unsigned int key_len = 0;
     int key_cnt = 0;
+    int cur_key = 0;
 
     key_cnt = _get_keys_cnt(cmd);   /* get count of keys */
     if (!key_cnt)
         return -1;
 
-    arr = malloc(key_cnt);          /* allocate array of string */
+    arr = (byte_t **) malloc(key_cnt);          /* allocate array of string */
 
     while (*tmp_ch)
     {
         if (!isspace(*tmp_ch))
         {
-            key_len = strlen(tmp_ch);
-            ++key_len;
+            key_len = _str_len(tmp_ch);
 
-            *arr = (byte_t *) malloc(key_len);
-            strncpy((char *)*arr, tmp_ch, key_len - 1);
-            *arr[key_len - 1] = '\0';
-            arr++;
+            /* save key to buffer */
+            arr[cur_key] = (byte_t *) malloc(key_len + 1);
+
+            strncpy((char *)arr[cur_key], tmp_ch, key_len);
+            arr[cur_key][key_len] = '\0';
+
+            cur_key++;
+            tmp_ch += key_len;
+
+            continue;
+        }
+        else
+        {
+            tmp_ch++;
         }
 
-        tmp_ch++;
     }
 
-    return 0;
+    return key_cnt;
 }
 
 /*---------------------------------------------------------------------------*/
