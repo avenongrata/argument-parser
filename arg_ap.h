@@ -1,9 +1,5 @@
-/*
- * This file describes keys, which don't become argument as next parameter.
- */
-
-#ifndef BEHAVIOR_KEYS_H
-#define BEHAVIOR_KEYS_H
+#ifndef ARG_AP_H
+#define ARG_AP_H
 
 /*===========================================================================*/
 
@@ -11,10 +7,11 @@
 
 /*---------------------------------------------------------------------------*/
 
-typedef struct _behavior_keys
+typedef struct _arg_ap
 {
     byte_t ** _input;    /* incoming arguments */
     byte_t ** _output;   /* array of found arguments */
+    byte_t ** params;    /* found params after keys */
 
     /*-----------------------------------------------------------------------*/
 
@@ -22,10 +19,12 @@ typedef struct _behavior_keys
     unsigned int _found_count;    /* count of found keys */
 
     /*-----------------------------------------------------------------------*/
-} behavior_keys;
+} arg_ap;
 
-extern void _init_beh_keys(behavior_keys * arg, const char * cmd);
+/*---------------------------------------------------------------------------*/
+
+extern void _init_arg_ap(arg_ap * arg, const char * cmd);
 
 /*===========================================================================*/
 
-#endif // BEHAVIOR_KEYS_H
+#endif // ARG_AP_H

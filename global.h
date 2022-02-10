@@ -16,7 +16,7 @@
 
 /*---------------------------------------------------------------------------*/
 
-#ifndef concontainer_of
+#ifndef container_of
 # define container_of(ptr, type, member) \
      (type *) ((void *)ptr - offsetof(type, member))
 #endif
@@ -24,13 +24,16 @@
 /*---------------------------------------------------------------------------*/
 
 #define foreach(item, list) \
-    byte ** tmp = list; \
-    for (byte_t * item = &tmp[0]; item; item++)
+    int
 
 /*---------------------------------------------------------------------------*/
 
-/* defined types */
 typedef unsigned char byte_t;
+
+/*---------------------------------------------------------------------------*/
+
+/* get from cmd all keys */
+extern int _parse_cmd(byte_t ** arr, const char * cmd);
 
 /*===========================================================================*/
 

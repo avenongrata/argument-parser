@@ -1,13 +1,20 @@
 #include <stdio.h>
 
-#include "behavior_keys.h"
 #include "global.h"
+#include "arg_parser.h"
 
 /*---------------------------------------------------------------------------*/
 
 int main(int argc, char ** argv)
 {
-    _BH_ARGS(lol);
+    /* create object */
+    struct cmd_args args;
+
+    /* set default values */
+    INIT_ARGS(&args, NULL, NULL);
+
+    /* find arguments */
+    args.find(argv);
 
     return 0;
 }
