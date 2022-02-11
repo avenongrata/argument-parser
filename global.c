@@ -64,9 +64,9 @@ int _parse_cmd(byte_t *** r_arr, const char * cmd)
     if (!key_cnt)
         return -1;
 
-    /* allocate one more and set to NULL as last param ? */
     /* allocate array of keys */
-    arr = (byte_t **) malloc(key_cnt * sizeof (byte_t *));
+    arr = (byte_t **) malloc((key_cnt + 1) * sizeof (byte_t *));
+    arr[key_cnt] = NULL;    /* make it possible to parse in foreach-cycle */
 
     while (*cur_ch)
     {
