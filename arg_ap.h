@@ -10,7 +10,7 @@
 typedef struct _arg_ap
 {
     byte_t ** _input;    /* incoming arguments */
-    byte_t ** _output;   /* array of found arguments */
+    byte_t ** found;     /* array of found arguments */
     byte_t ** params;    /* found params after keys */
 
     /*-----------------------------------------------------------------------*/
@@ -19,11 +19,17 @@ typedef struct _arg_ap
     unsigned int _found_count;    /* count of found keys */
 
     /*-----------------------------------------------------------------------*/
+
+    /* find all keys in cmd */
+    byte_t ** (*_find)(struct _arg_ap * ctx, char ** argv);
+
+    /*-----------------------------------------------------------------------*/
 } arg_ap;
 
 /*---------------------------------------------------------------------------*/
 
 extern void _init_arg_ap(arg_ap * arg, const char * cmd);
+extern byte_t ** _ap_find(arg_ap * ctx, char ** argv);
 
 /*===========================================================================*/
 

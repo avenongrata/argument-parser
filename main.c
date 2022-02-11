@@ -11,10 +11,12 @@ int main(int argc, char ** argv)
     struct cmd_args args;
 
     /* set default values */
-    INIT_ARGS(&args, NULL, NULL);
+    INIT_ARGS(&args, "-a -b -c -d", "-g -f -j");
 
     /* find arguments */
-    args.find(argv);
+    //args.find(argv);
+
+
 
     return 0;
 }

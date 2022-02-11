@@ -14,7 +14,7 @@
 typedef struct _behavior_keys
 {
     byte_t ** _input;    /* incoming arguments */
-    byte_t ** _output;   /* array of found arguments */
+    byte_t ** found;     /* array of found arguments */
 
     /*-----------------------------------------------------------------------*/
 
@@ -22,9 +22,17 @@ typedef struct _behavior_keys
     unsigned int _found_count;    /* count of found keys */
 
     /*-----------------------------------------------------------------------*/
+
+    /* find all keys in cmd */
+    byte_t ** (*_find)(struct _behavior_keys * ctx, char ** argv);
+
+    /*-----------------------------------------------------------------------*/
 } behavior_keys;
 
+/*---------------------------------------------------------------------------*/
+
 extern void _init_beh_keys(behavior_keys * arg, const char * cmd);
+extern byte_t ** _bh_find(behavior_keys * ctx, char ** argv);
 
 /*===========================================================================*/
 

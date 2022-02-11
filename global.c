@@ -51,42 +51,42 @@ static int _get_keys_cnt(const char * str)
 
 /*---------------------------------------------------------------------------*/
 
-int _parse_cmd(byte_t ** arr, const char * cmd)
+int _parse_cmd(byte_t *** r_arr, const char * cmd)
 {
-    const char * tmp_ch = cmd;
+    const char * cur_ch = cmd;
     unsigned int key_len = 0;
     int key_cnt = 0;
     int cur_key = 0;
+    byte_t ** arr;
 
-    key_cnt = _get_keys_cnt(cmd);   /* get count of keys */
+    /* get count of keys */
+    key_cnt = _get_keys_cnt(cmd);
     if (!key_cnt)
         return -1;
 
-    arr = (byte_t **) malloc(key_cnt);          /* allocate array of string */
+    /* allocate one more and set to NULL as last param ? */
+    /* allocate array of keys */
+    arr = (byte_t **) malloc(key_cnt * sizeof (byte_t *));
 
-    while (*tmp_ch)
+    while (*cur_ch)
     {
-        if (!isspace(*tmp_ch))
+        /* pass line sep */
+        if (isspace(*cur_ch))
         {
-            key_len = _str_len(tmp_ch);
-
-            /* save key to buffer */
-            arr[cur_key] = (byte_t *) malloc(key_len + 1);
-
-            strncpy((char *)arr[cur_key], tmp_ch, key_len);
-            arr[cur_key][key_len] = '\0';
-
-            cur_key++;
-            tmp_ch += key_len;
-
+            cur_ch++;
             continue;
         }
-        else
-        {
-            tmp_ch++;
-        }
 
+        key_len = _str_len(cur_ch);     /* get len of the key */
+        arr[cur_key] = (byte_t *) malloc(key_len + 1);
+        strncpy((char *)arr[cur_key], cur_ch, key_len);
+        arr[cur_key][key_len] = '\0';
+
+        cur_key++;
+        cur_ch += key_len;
     }
+
+    *r_arr = arr;
 
     return key_cnt;
 }

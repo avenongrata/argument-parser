@@ -10,14 +10,14 @@ void INIT_ARGS(struct cmd_args * arg,
 {
     _init_beh_keys(&arg->beh_keys, bk);
     _init_arg_ap(&arg->arg_keys, ak);
-    arg->find = _find_args;
+    //arg->find = _find_args;
 }
 
 /*---------------------------------------------------------------------------*/
 
-byte_t ** _find_args(char ** argv, ...)
-{
+//byte_t ** _find_args(char ** argv, ...)
+//{
 
-}
+//}
 
 /*---------------------------------------------------------------------------*/

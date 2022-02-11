@@ -23,8 +23,8 @@
 
 /*---------------------------------------------------------------------------*/
 
-#define foreach(item, list) \
-    int
+#define foreach(var, set) \
+    while ((var = *set)) \
 
 /*---------------------------------------------------------------------------*/
 
@@ -32,8 +32,8 @@ typedef unsigned char byte_t;
 
 /*---------------------------------------------------------------------------*/
 
-/* get from cmd all keys */
-extern int _parse_cmd(byte_t ** arr, const char * cmd);
+/* get all keys from cmd */
+extern int _parse_cmd(byte_t *** arr, const char * cmd);
 
 /*===========================================================================*/
 
