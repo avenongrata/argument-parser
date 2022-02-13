@@ -51,21 +51,21 @@ static int _get_keys_cnt(const char * str)
 
 /*---------------------------------------------------------------------------*/
 
-int _parse_cmd(byte_t *** r_arr, const char * cmd)
+int _parse_cmd(char *** r_arr, const char * cmd)
 {
     const char * cur_ch = cmd;
     unsigned int key_len = 0;
     int key_cnt = 0;
     int cur_key = 0;
-    byte_t ** arr;
+    char ** arr;
 
     /* get count of keys */
     key_cnt = _get_keys_cnt(cmd);
     if (!key_cnt)
-        return -1;
+        return 0;
 
     /* allocate array of keys */
-    arr = (byte_t **) malloc((key_cnt + 1) * sizeof (byte_t *));
+    arr = (char **) malloc((key_cnt + 1) * sizeof (char *));
     arr[key_cnt] = NULL;    /* make it possible to parse in foreach-cycle */
 
     while (*cur_ch)
@@ -78,7 +78,7 @@ int _parse_cmd(byte_t *** r_arr, const char * cmd)
         }
 
         key_len = _str_len(cur_ch);     /* get len of the key */
-        arr[cur_key] = (byte_t *) malloc(key_len + 1);
+        arr[cur_key] = (char *) malloc(key_len + 1);
         strncpy((char *)arr[cur_key], cur_ch, key_len);
         arr[cur_key][key_len] = '\0';
 

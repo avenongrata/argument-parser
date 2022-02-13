@@ -23,17 +23,13 @@
 
 /*---------------------------------------------------------------------------*/
 
-#define foreach(var, set) \
-    for (typeof (set) t_set = set; var = *t_set++; )
-
-/*---------------------------------------------------------------------------*/
-
-typedef unsigned char byte_t;
+#define _foreach(var, set) \
+    for (typeof (set) t_set = set; (var = *t_set++); )
 
 /*---------------------------------------------------------------------------*/
 
 /* get all keys from cmd */
-extern int _parse_cmd(byte_t *** arr, const char * cmd);
+extern int _parse_cmd(char *** arr, const char * cmd);
 
 /*===========================================================================*/
 
