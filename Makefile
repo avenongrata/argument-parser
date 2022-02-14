@@ -1,5 +1,19 @@
+
 TARGET = cmd_parser
-CC     = gcc
+
+#------------------------------------------------------------------------------
+
+# use std path
+SDK_DIR  = 
+SDK_BIN  = 
+SDK_PREF =
+
+DISTDIR = .
+INCPATH = -I.
+LIBS    = 
+DEFINES = 
+
+#------------------------------------------------------------------------------
 
 # -g: Produce debugging information in the operating system’s native format. 
 #     GDB can work with this debugging information
@@ -10,32 +24,76 @@ CC     = gcc
 # -Wall: This enables all the warnings about constructions that some users 
 #	 consider questionable, and that are easy to avoid 
 #	 (or modify to prevent the warning), even in conjunction with macros.
-# -Wextra: This enables some extra warning flags that are not enabled by ‘-Wall’.
+# -Wextra: This enables some extra warning flags that are not enabled 
+#	   by ‘-Wall’.
+# -fPIC: Generate position-independent code (PIC) suitable for use 
+#	 in a shared library, if supported for the target machine. 
 
-CFLAGS = -g -O2 -pipe -Wall -Wextra
+CFLAGS  = -g -O2 -pipe -Wall -Wextra $(DEFINES)
 
 OBJECTS = arg_ap.o arg_parser.o behavior_keys.o global.o main.o
 
-all: main.o arg_ap.o arg_parser.o behavior_keys.o global.o
-	$(CC) main.o arg_ap.o arg_parser.o behavior_keys.o global.o -o $(TARGET)
+LFLAGS  =
+
+#------------------------------------------------------------------------------
+
+# Build for ARM instad of x86/x86_64
+
+ifeq ($(arch), arm)
+	SDK_DIR  = /opt/radiomodule-sdk
+	SDK_BIN  = $(SDK_DIR)/bin
+	SDK_PREF = $(SDK_BIN)/arm-linux-
+endif
+
+#------------------------------------------------------------------------------
+
+# Create dynamic library instead of ELF
+
+ifeq ($(lib), 1)
+	TARGET    = libparser.so
+	DISTDIR   = ./lib
+
+	INCPATH   = -I.
+	LIBS      = -L./lib
+	CFLAGS    = -g -pipe -Wall -Wextra -fPIC $(DEFINES)
+	LFLAGS    = -shared -Wl,-soname,$(TARGET)
+	
+	# create destination directory
+	#test -d $(DISTDIR) || mkdir -p $(DISTDIR);
+endif
+
+#------------------------------------------------------------------------------
+
+TAR_FILE = $(DISTDIR)/$(TARGET)
+
+#------------------------------------------------------------------------------
+
+CC = $(SDK_PREF)gcc $(LFLAGS)
+
+#------------------------------------------------------------------------------
+
+all: distclean $(OBJECTS)
+	test -d $(DISTDIR) || mkdir -p $(DISTDIR);
+	$(CC) $(OBJECTS) -o $(TAR_FILE)
 
 clean:
-	rm -rf *.o $(TARGET)
-	
-distclean: clean
+	rm -rf *.o $(TAR_FILE)
 
+distclean: clean
+	rm -f $(TAR_FILE)
+	rm -rf ./lib
 
 arg_ap.o: arg_ap.c
-	$(CC) -c arg_ap.c
-	
+	$(CC) $(CFLAGS) -c arg_ap.c
+
 arg_parser.o: arg_parser.c
-	$(CC) -c arg_parser.c
+	$(CC) $(CFLAGS) -c arg_parser.c
 
 behavior_keys.o: behavior_keys.c
-	$(CC) -c behavior_keys.c
+	$(CC) $(CFLAGS) -c behavior_keys.c
 
 global.o: global.c
-	$(CC) -c global.c
+	$(CC) $(CFLAGS) -c global.c
 
 main.o: main.c
-	$(CC) -c main.c
+	$(CC) $(CFLAGS) -c main.c
