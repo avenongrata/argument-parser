@@ -36,7 +36,7 @@ typedef struct _behavior_keys
 /*---------------------------------------------------------------------------*/
 
 extern void _init_beh_keys(behavior_keys * arg, const char * cmd);
-extern void _deinit_beh_keys(behavior_keys *arg);
+extern void _deinit_beh_keys(behavior_keys * arg);
 extern unsigned int _bh_find(behavior_keys * ctx, int argc, char ** argv);
 
 /*===========================================================================*/
