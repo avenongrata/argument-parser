@@ -52,14 +52,12 @@ endif
 ifeq ($(lib), 1)
 	TARGET    = libparser.so
 	DISTDIR   = ./lib
+	OBJECTS = arg_ap.o arg_parser.o behavior_keys.o global.o
 
 	INCPATH   = -I.
 	LIBS      = -L./lib
 	CFLAGS    = -g -pipe -Wall -Wextra -fPIC $(DEFINES)
 	LFLAGS    = -shared -Wl,-soname,$(TARGET)
-	
-	# create destination directory
-	#test -d $(DISTDIR) || mkdir -p $(DISTDIR);
 endif
 
 #------------------------------------------------------------------------------
