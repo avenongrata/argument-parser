@@ -32,11 +32,6 @@ extern void find_args(struct cmd_args * args, int argc, char ** argv)
     {
         args->state |= BEH_KEYS;
     }
-    else
-    {
-        /* free allocated memory */
-        args->beh_keys._deinit(&args->beh_keys);
-    }
 
     /*-----------------------------------------------------------------------*/
 
@@ -44,11 +39,6 @@ extern void find_args(struct cmd_args * args, int argc, char ** argv)
     if (args->arg_keys._find(&args->arg_keys, argc, argv))
     {
         args->state |= ARG_AP;
-    }
-    else
-    {
-        /* free allocated memory */
-        args->arg_keys._deinit(&args->arg_keys);
     }
 }
 

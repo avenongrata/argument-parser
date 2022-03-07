@@ -31,23 +31,33 @@ void _deinit_arg_ap(arg_ap * arg)
 {
     unsigned int i;
 
-    if (!arg->_input_count)
-        return ;
-
-    /* delete keys */
-    for (i = 0; i < arg->_input_count; i++)
+    if (arg->_input_count)
     {
-        free(arg->_input[i]);
+        /* delete keys */
+        for (i = 0; i < arg->_input_count; i++)
+            free(arg->_input[i]);
     }
 
     /* delete array for keys */
-    free(arg->_input);
+    if (arg->_input)
+    {
+        free(arg->_input);
+        arg->_input = NULL;
+    }
 
     /* delete array of found keys */
-    free(arg->found);
+    if (arg->found)
+    {
+        free(arg->found);
+        arg->found = NULL;
+    }
 
     /* delete array of found params */
-    free(arg->param);
+    if (arg->param)
+    {
+        free(arg->param);
+        arg->param = NULL;
+    }
 
     /* set value to zero to prevent multiple deinitialization */
     arg->_input_count = 0;
@@ -60,9 +70,9 @@ unsigned int _ap_find(arg_ap * ctx, int argc, char ** argv)
     int i;
     char * key = NULL;
 
-    /* there are no argument-params in cmd */
-//    if (argc < 3)
-//        return 0;
+    /* when keys are not specified or set incorrect number of params */
+    if (!ctx->_input || argc < 3)
+        return 0;
 
     ctx->found_count = 0;
     /* it's not the right way, but i can't suggest smth better yet */
