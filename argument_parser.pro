@@ -10,3 +10,6 @@ HEADERS += \
     arg_parser.h \
     behavior_keys.h \
     global.h
+
+DISTFILES += \
+    Makefile
